@@ -149,22 +149,53 @@ class GPT_Forward(LLM):
         """Generates text from the model."""
         if not isinstance(prompt, list):
             text = [prompt]
-        config = self.config['gpt_config'].copy()
-        config['n'] = n
         # If there are any [APE] tokens in the prompts, remove them
         for i in range(len(prompt)):
             prompt[i] = prompt[i].replace('[APE]', '').strip()
+
+        config = self.config['gpt_config'].copy()
+        # model: text-davinci-002
+        # temperature: 0.9
+        # max_tokens: 50
+        # top_p: 0.9
+        # frequency_penalty: 0.0
+        # presence_penalty: 0.0
+        # different openai LLM
+        model_name = config['model']
         response = None
-        while response is None:
-            try:
-                response = openai.Completion.create(
-                    **config, prompt=prompt)
-            except Exception as e:
-                if 'is greater than the maximum' in str(e):
-                    raise BatchSizeException()
-                print(e)
-                print('Retrying...')
-                time.sleep(5)
+        if model_name in ['gpt-3.5-turbo']:
+            # chat
+            config['n'] = n
+            while response is None:
+                try:
+                    response = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                                {"role": "system", "content": "You are a helpful assistant."},
+                                {"role": "user", "content": "Who won the world series in 2020?"},
+                                {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+                                {"role": "user", "content": "Where was it played?"}
+                            ]
+                    )
+                except Exception as e:
+                    if 'is greater than the maximum' in str(e):
+                        raise BatchSizeException()
+                    print(e)
+                    print('Retrying...')
+                    time.sleep(5)
+        else:        
+            # complete
+            config['n'] = n
+            while response is None:
+                try:
+                    response = openai.Completion.create(
+                        **config, prompt=prompt)
+                except Exception as e:
+                    if 'is greater than the maximum' in str(e):
+                        raise BatchSizeException()
+                    print(e)
+                    print('Retrying...')
+                    time.sleep(5)
 
         return [response['choices'][i]['text'] for i in range(len(response['choices']))]
 
