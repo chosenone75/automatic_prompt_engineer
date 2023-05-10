@@ -163,26 +163,28 @@ class GPT_Forward(LLM):
         # different openai LLM
         model_name = config['model']
         response = None
+        texts = []
         if model_name in ['gpt-3.5-turbo']:
             # chat
             config['n'] = n
-            while response is None:
-                try:
-                    response = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
-                        messages=[
-                                {"role": "system", "content": "You are a helpful assistant."},
-                                {"role": "user", "content": "Who won the world series in 2020?"},
-                                {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-                                {"role": "user", "content": "Where was it played?"}
-                            ]
-                    )
-                except Exception as e:
-                    if 'is greater than the maximum' in str(e):
-                        raise BatchSizeException()
-                    print(e)
-                    print('Retrying...')
-                    time.sleep(5)
+
+            for _prompt in prompt:
+                messages = [
+                    {"role": "user", "content": _prompt}
+                ]
+                config['messages'] = messages
+                while response is None:
+                    try:
+                        response = openai.ChatCompletion.create(**config)
+                    except Exception as e:
+                        if 'is greater than the maximum' in str(e):
+                            raise BatchSizeException()
+                        print(e)
+                        print('Retrying...')
+                        time.sleep(5)
+                text = [response['choices'][i]['message']['content'] for i in range(len(response['choices']))]
+                if text:
+                    texts.extend(text)
         else:        
             # complete
             config['n'] = n
@@ -196,8 +198,9 @@ class GPT_Forward(LLM):
                     print(e)
                     print('Retrying...')
                     time.sleep(5)
+            texts = [response['choices'][i]['text'] for i in range(len(response['choices']))]
 
-        return [response['choices'][i]['text'] for i in range(len(response['choices']))]
+        return texts
 
     def __complete(self, prompt, n):
         """Generates text from the model and returns the log prob data."""

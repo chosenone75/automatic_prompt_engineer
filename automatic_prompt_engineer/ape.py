@@ -5,7 +5,8 @@ from automatic_prompt_engineer import generate, evaluate, config, template, data
 def get_simple_prompt_gen_template(prompt_gen_template, prompt_gen_mode):
     if prompt_gen_template is None:
         if prompt_gen_mode == 'forward':
-            prompt_gen_template = "I gave a friend an instruction. Based on the instruction they produced the following input-output pairs:\n\n[full_DEMO]\n\nThe instruction was to [APE]"
+            # prompt_gen_template = "I gave a friend an instruction. Based on the instruction they produced the following input-output pairs:\n\n[full_DEMO]\n\nThe instruction was to [APE]"
+            prompt_gen_template = "我给朋友说了个任务要求，根据那个任务要求他们给出来如下这些输入和输出文本:\n\n[full_DEMO]\n\n你觉得任务要求是什么呢，请给出你推测的任务要求：[APE]"
         elif prompt_gen_mode == 'insert':
             prompt_gen_template = None
         else:
@@ -19,7 +20,7 @@ def simple_ape(dataset,
                prompt_gen_template=None,
                demos_template='Input: [INPUT]\nOutput: [OUTPUT]',
                eval_model='text-davinci-002',
-               prompt_gen_model='text-davinci-002',
+               prompt_gen_model='gpt-3.5-turbo', #gpt-3.5-turbo
                prompt_gen_mode='forward',
                num_prompts=50,
                eval_rounds=20,
