@@ -249,6 +249,8 @@ class GPT_Forward(LLM):
                 print(e)
                 print('Retrying...')
                 time.sleep(5)
+        print(response)
+        raise "MetaError"
         log_probs = [response['choices'][i]['logprobs']['token_logprobs'][1:]
                      for i in range(len(response['choices']))]
         tokens = [response['choices'][i]['logprobs']['tokens'][1:]
