@@ -173,6 +173,8 @@ class GPT_Forward(LLM):
                     {"role": "user", "content": _prompt}
                 ]
                 config['messages'] = messages
+                
+                print(config)
                 while response is None:
                     try:
                         response = openai.ChatCompletion.create(**config)
@@ -183,6 +185,8 @@ class GPT_Forward(LLM):
                         print('Retrying...')
                         time.sleep(5)
                 text = [response['choices'][i]['message']['content'] for i in range(len(response['choices']))]
+                print(text)
+                raise ""
                 if text:
                     texts.extend(text)
         else:        

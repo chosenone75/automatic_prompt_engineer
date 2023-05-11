@@ -40,6 +40,7 @@ with open("/Users/lebronran/Desktop/AIGC_Detector/prompt_input.tsv", "r") as f:
                     # output
                     if index2column[j] == 'review':
                         review = info
+                        review = review.replace("\\\\n", "").replace("\n", "")
             records.append((record.strip(","), review))
 
 records_debug = records[:10]
@@ -68,8 +69,14 @@ Output: [OUTPUT]"""
 # Now, let's use APE to find prompts that generate antonyms for each word.
 from automatic_prompt_engineer import ape
 
+result = ape.simple_estimate_cost(
+    dataset=(hints, reviews),
+    eval_template=eval_template,
+)
+print(result)
+
 result, demo_fn = ape.simple_ape(
-    dataset=(words, antonyms),
+    dataset=(hints, reviews),
     eval_template=eval_template,
 )
 

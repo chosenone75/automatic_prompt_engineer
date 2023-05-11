@@ -6,7 +6,7 @@ def get_simple_prompt_gen_template(prompt_gen_template, prompt_gen_mode):
     if prompt_gen_template is None:
         if prompt_gen_mode == 'forward':
             # prompt_gen_template = "I gave a friend an instruction. Based on the instruction they produced the following input-output pairs:\n\n[full_DEMO]\n\nThe instruction was to [APE]"
-            prompt_gen_template = "我给朋友说了个任务要求，根据那个任务要求他们给出来如下这些输入和输出文本:\n\n[full_DEMO]\n\n你觉得任务要求是什么呢，请给出你推测的任务要求：[APE]"
+            prompt_gen_template = "我给朋友说了个根据输入信息写商户评价的任务，根据那个具体的任务要求他们给出来如下这些输入和输出文本:\n\n[full_DEMO]\n\n你觉得具体的任务要求是什么呢，尽可能详细，请给出你推测的任务要求：[APE]"
         elif prompt_gen_mode == 'insert':
             prompt_gen_template = None
         else:

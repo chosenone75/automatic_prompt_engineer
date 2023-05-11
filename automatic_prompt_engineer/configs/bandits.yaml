@@ -8,7 +8,7 @@ generation:
     gpt_config: # the configuration of the GPT model used for prompt generation (these are fed directly to the openai function)
       model: text-davinci-002
       temperature: 0.9
-      max_tokens: 50
+      max_tokens: 5000
       top_p: 0.9
       frequency_penalty: 0.0
       presence_penalty: 0.0
@@ -29,7 +29,7 @@ evaluation:
       gpt_config:
         model: text-davinci-002
         temperature: 0.7
-        max_tokens: 200
+        max_tokens: 5000
         top_p: 1.0
         frequency_penalty: 0.0
         presence_penalty: 0.0
@@ -40,7 +40,7 @@ demo:
     gpt_config:
       model: text-davinci-002
       temperature: 0.7
-      max_tokens: 200
+      max_tokens: 5000
       top_p: 1.0
       frequency_penalty: 0.0
       presence_penalty: 0.0
