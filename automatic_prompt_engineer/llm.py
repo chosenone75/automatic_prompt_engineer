@@ -11,7 +11,9 @@ gpt_costs_per_thousand = {
     'davinci': 0.0200,
     'curie': 0.0020,
     'babbage': 0.0005,
-    'ada': 0.0004
+    'ada': 0.0004,
+    'turbo':0.0002,
+    '3.5':0.0002
 }
 
 
@@ -173,8 +175,7 @@ class GPT_Forward(LLM):
                     {"role": "user", "content": _prompt}
                 ]
                 config['messages'] = messages
-                
-                print(config)
+                # print(config)
                 while response is None:
                     try:
                         response = openai.ChatCompletion.create(**config)
@@ -185,8 +186,6 @@ class GPT_Forward(LLM):
                         print('Retrying...')
                         time.sleep(5)
                 text = [response['choices'][i]['message']['content'] for i in range(len(response['choices']))]
-                print(text)
-                raise ""
                 if text:
                     texts.extend(text)
         else:        
@@ -253,8 +252,6 @@ class GPT_Forward(LLM):
                 print(e)
                 print('Retrying...')
                 time.sleep(5)
-        print(response)
-        raise "MetaError"
         log_probs = [response['choices'][i]['logprobs']['token_logprobs'][1:]
                      for i in range(len(response['choices']))]
         tokens = [response['choices'][i]['logprobs']['tokens'][1:]

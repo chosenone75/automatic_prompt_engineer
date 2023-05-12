@@ -131,6 +131,6 @@ class LikelihoodEvaluationResult(evaluate.EvaluationResult):
         prompts, scores = self.sorted()
         s += 'log(p): prompt\n'
         s += '----------------\n'
-        for prompt, score in list(zip(prompts, scores))[:10]:
+        for prompt, score in list(zip(prompts, scores))[:100]:
             s += f'{score:.2f}: {prompt}\n'
         return s

@@ -1,14 +1,14 @@
 generation:
   num_subsamples: 5 # the number of unique queries sent to the LLM with different demonstrations for prompt generation
   num_demos: 5 # the number of demonstrations sent to the LLM for each unique query
-  num_prompts_per_subsample: 50 # the number of prompts generated for each unique query
+  num_prompts_per_subsample: 100 # the number of prompts generated for each unique query
   model:
     name: GPT_forward # the name of the model used for prompt generation
     batch_size: 500 # the maximum batch size used for prompt generation
     gpt_config: # the configuration of the GPT model used for prompt generation (these are fed directly to the openai function)
-      model: text-davinci-002
+      model: gpt-3.5-turbo
       temperature: 0.9
-      max_tokens: 5000
+      max_tokens: 1000
       top_p: 0.9
       frequency_penalty: 0.0
       presence_penalty: 0.0
@@ -29,7 +29,7 @@ evaluation:
       gpt_config:
         model: text-davinci-002
         temperature: 0.7
-        max_tokens: 5000
+        max_tokens: 4000
         top_p: 1.0
         frequency_penalty: 0.0
         presence_penalty: 0.0
@@ -40,7 +40,7 @@ demo:
     gpt_config:
       model: text-davinci-002
       temperature: 0.7
-      max_tokens: 5000
+      max_tokens: 4000
       top_p: 1.0
       frequency_penalty: 0.0
       presence_penalty: 0.0
